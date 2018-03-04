@@ -1,23 +1,26 @@
-# TextPedia
+# Textpedia
 
-    This project was Bootstrapped using CRNA.
+This project was Bootstrapped using CRNA.
 
-    What Textpedia is can be be understood by considering a sample use case.
+What Textpedia is can be be understood by considering a sample use case.
 
-    Imagine for a moment that you're in a meeting with an important client and several other participants are present. The presenter or the client mentions a word, or phrase you have only the vaguest idea about.
+Imagine for a moment that you're in a meeting with an important client and several other participants are present. The presenter or the client mentions a word, or phrase you have only the vaguest idea about.
 
-    Because of the importance of this meeting you can't use your phone to research the keyword, but you know that if you don't make a note about it or something like that, the pressures of the day will probably cause you to forget.
+Because of the importance of this meeting you can't use your phone to research the keyword, but you know that if you don't make a note about it or something like that, the pressures of the day will probably cause you to forget.
 
-    You'd really like to know what the keyword/phrase means so what do you do?
+You'd really like to know what the keyword/phrase means so what do you do?
 
-    You could...
+You could...
 
-    Make a reminder to yourself, imagine having to take a minute or so to covertly type out this reminder while the gist of the meeting passes you by. Not good!
+Make a reminder to yourself, 
+imagine having to take a minute or so to covertly type out this reminder while the gist of the meeting passes you by. Not good!
 
-    Trust in your memory to remember to check out the keyword at the end of the day. Even worse!
+Trust in your memory to remember to check out the keyword at the end of the day.
+ Even worse!
 
-    Spend 10 seconds or less to type out the keyword/phrase and SMS it to Textpedia safe in the knowledge that when you check your mail at the end of the day, you'll have a nicely formatted preliminary report waiting for you. This allows you to decide whether or not you want to dig deeper into the subject. Awesome!
+Spend 10 seconds or less to type out the keyword/phrase and SMS it to Textpedia safe in the knowledge that when you check your mail at the end of the day, you'll have a nicely formatted preliminary report waiting for you. This allows you to decide whether or not you want to dig deeper into the subject.
 
+ Awesome!
 ## Requirements 
 
 
@@ -65,5 +68,5 @@ This will start the process of "ejecting" from Create React Native App's build s
 
 
 ## Contributor
-- [Ernest Offiong](https://github.com/ernoff)
-- [Edward Obande](https://github.com/obie3)
+- [Ernest Offiong](https://gitlab.com/ernoff)
+- [Edward Obande](https://gitlab.com/obie)
