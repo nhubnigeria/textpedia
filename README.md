@@ -17,7 +17,7 @@ More functionalities will be included as time goes on, PR's to improve functiona
 
 To run clone the app to your local machine using 
 
-* `git clone https://github.com/obie3/crna-boilerplate.git` in your terminal
+* `git clone https://github.com/nhubnigeria/textpedia.git` in your terminal
 
 * `cd` into the newly created project root directory
 
