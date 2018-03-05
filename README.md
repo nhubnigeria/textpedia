@@ -2,7 +2,7 @@
 
 This project was Bootstrapped using CRNA.
 
-Textpedia Mobile App is can be be understood by considering a sample use case.
+ What Textpedia Mobile App is can be be understood by considering a sample use case.
 
 Imagine for a moment that you're in a meeting with an important client and several other participants are present. The presenter or the client mentions a word, or phrase you have only the vaguest idea about.
 
