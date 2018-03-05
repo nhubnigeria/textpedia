@@ -32,7 +32,7 @@ Spend 10 seconds or less to type out the keyword/phrase and SMS it to Textpedia 
 
 To run clone the app to your local machine using 
 
-* `git clone https://github.com/nhubnigeria/textpedia.git` in your terminal
+* `git clone https://github.com/nhubnigeria/textpediaMobile.git` in your terminal
 
 * `cd` into the newly created project root directory
 
