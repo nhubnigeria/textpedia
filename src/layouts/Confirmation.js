@@ -17,6 +17,8 @@ class Confirmation extends Component {
             show: false,
             jwt: this.props.navigation.state.params.res,
         }
+
+        
     }
 
     validInput = (token) => {
@@ -37,9 +39,9 @@ class Confirmation extends Component {
             alert('Expired OTP, Please Retry In 2 Hours')
         } else {
             alert('Oops Something Went Wrong, Try Again Later')
-
         }
         this.saveJWT(jwt)
+        this.props.navigation.navigate('Splash', null)
     }
 
     saveJWT = async (jwt) => {
@@ -88,10 +90,11 @@ class Confirmation extends Component {
                 this.setState({ auth: true, show: false })
                 this.deleteJWT(jwt)
                 alert('Registration Completed')
+                this.props.navigation.navigate('Splash', null)
             })
             .catch((err) => {
                 this.setState({ error: err, show: false })
-                let message = err.response.data
+                 
                 this.showAlert(message)
             })
     }

@@ -4,12 +4,23 @@ import {View} from 'react-native-animatable'
 import Swiper from 'react-native-swiper'
 import {header1, header2, header3, welcome_p1, welcome_p2, welcome_p3, step_1,
         step_2, step_3, example_1, example_2, example_3} from './../utils'
-
+         import { NavigationActions } from 'react-navigation'
 import { Card, CardTitle, CardImage, CardContent, CardAction } from 'react-native-card-view';
 import { styles } from '../styles/splashstyles'
 import {CustomText, CustomButton, CustomTextInput} from '../components'
 
+
 class Splash extends Component {
+
+    disabled=()=>{
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Signup' })],
+          });
+          this.props.navigation.dispatch(resetAction);
+    }
+
+    
     render() {
         return (
             <View style={styles.container} animation={'zoomIn'} delay={600} duration={400}>
@@ -86,7 +97,7 @@ class Splash extends Component {
 
                 <CustomButton
                         style={styles.button} textStyle={styles.buttontext}
-                        onPress={() => {this.props.navigation.navigate('Signup')}}
+                        onPress={() => {this.disabled()}}
                           label= {'SIGN UP'}/>
                         
             </View>

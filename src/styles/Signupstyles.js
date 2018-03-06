@@ -32,6 +32,16 @@ export const styles = {
         color:'#841584'
     },
 
+
+    input: {
+        borderRadius: 4,
+        height: 50,
+        borderColor:'gray',
+        borderWidth: 0,
+        backgroundColor: '#ccc',
+        padding: 15,
+    },
+
     button: {
         backgroundColor: 'white',
         borderRadius: 4,

@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View , AsyncStorage} from 'react-native';
 import { StackNavigator } from 'react-navigation'
-import { Signup, Confirmation, Splash } from './src'
+import { Signup, Confirmation, Splash} from './src'
 import { AppLoading, Font } from 'expo'
 
 
@@ -22,6 +22,7 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this._loadAssetsAsync()
+
   }
 
   _loadAssetsAsync = async () => {

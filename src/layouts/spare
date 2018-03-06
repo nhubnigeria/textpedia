@@ -29,30 +29,17 @@ class Signup extends Component {
 
     componentWillMount() {
         this.readJWT()
-    }
-
-    disabled=(jwt)=>{
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({routeName: 'Confirmation', params: { res: jwt},})],
-           
-          });
-          this.props.navigation.dispatch(resetAction);
-    }
-
-
-    componentDidMount() {
         this.setState({
-          pickerData: this.refs.phone.getPickerData()
+           // pickerData: this.phone.getPickerData(),
         });
-      }
+    }
 
     onPressFlag() {
-        this.refs.countryPicker.openModal()
+        this.countryPicker.openModal();
     }
 
     selectCountry(country) {
-        this.refs.phone.selectCountry(country.cca2.toLowerCase());
+        this.phone.selectCountry(country.cca2.toLowerCase());
         this.setState({ cca2: country.cca2 });
     }
 
@@ -63,34 +50,39 @@ class Signup extends Component {
             const value = await AsyncStorage.getItem('jwt');
             if (value !== null) {
                 this.setState({ show: false })
-                  this.disabled(value)
+
+                this.props.navigation.navigate('Confirmation', { res: value })
             }
         } catch (error) {
             this.setState({ loaded: false })
         }
     }
 
-    validInput = () => {
-          const{email, phoneNumber} = this.state
-         if (email.length == 0) {
+    validInput = (email, phoneNumber) => {
+        if (phoneNumber.length == 0) {
+            alert('Enter Phone Number')
+            return false
+        } else if (phoneNumber.length <11) {
+            alert('Enter Valid Phone Number')
+            return false
+        }else if (email.length == 0) {
             alert('Enter Email Address')
             return false
-        } else if (!isValidEmail.test(email)) {
+        }else if (!isValidEmail.test(email)) {
             alert('Enter A Valid Email Address')
             return false
-        } else {
+        }  else {
             return true
         }
     }
 
-    proceed = () => {
-        const{email, phoneNumber} = this.state
-        if (this.validInput(email)) {
+    proceed = (email, phoneNumber) => {
+        if (this.validInput(email, phoneNumber)) {
             this.submit(email, phoneNumber)
         }
     }
-    submit = () => {
-        const{email, phoneNumber} = this.state
+    submit = (email, phoneNumber) => {
+
         this.setState({ show: true })
         let data = JSON.stringify({
             data: {
@@ -106,17 +98,11 @@ class Signup extends Component {
         })
             .then((res) => {
                 this.setState({ show: false })
-                this.disabled(res.data.jwt)
+                this.props.navigation.navigate('Confirmation', { res: res.data.jwt })
             })
             .catch((err) => {
-                if(err.response.status ===409){
-                    alert('Phone Number Must be Unique')
-                    this.setState({ show: false })
-                }else{
-                    alert('Oops try Again')
-                    this.setState({ show: false }) 
-                }
-               
+                alert('Please Email and Phone Number Must be Unique')
+                this.setState({ show: false })
             })
     }
     render() {
@@ -138,23 +124,18 @@ class Signup extends Component {
 
 
                         <View style={styles.form} animation={'zoomIn'} delay={600} duration={400}>
+                            
 
-                            <PhoneInput 
-                                ref="phone"
-                                onPressFlag={this.onPressFlag} 
-                                style={styles.Input}
-                                textStyle={styles.Input}
-                                textProps={{placeholder: 'Telephone number'}}
-                                onChangePhoneNumber={(number)=>{this.setState({phoneNumber:number})}}/>
-                                
-                            <CountryPicker
-                                ref="countryPicker"
-                                onChange={value => this.selectCountry(value)}
-                                translation="eng"
-                                cca2={this.state.cca2}
-                            >
-                                <View />
-                            </CountryPicker>
+                            <CustomTextInput
+                                style={styles.textInput}
+                                onChangeText={(phoneNumber) => this.setState({ phoneNumber: phoneNumber })}
+                                placeholder={'+1237038602624'}
+                                placeholderTextColor={'rgba(255, 255,255,0.7)'}
+                                value={phoneNumber}
+                                underlineColorAndroid={'transparent'}
+                                keyboardType={'numeric'}
+                                animation={'fadeIn'}
+                            />
 
 
                             <CustomTextInput
@@ -168,16 +149,18 @@ class Signup extends Component {
                                 animation={'fadeIn'}
                             />
 
-                            <CustomButton
-                                isLoading={show}
-                                style={styles.button} textStyle={styles.buttontext}
-                                onPress={() => { this.proceed() }}
-                                label={'SIGN UP'} />
+                           
+                            
+                        <CustomButton
+                            isLoading={show}
+                            style={styles.button} textStyle={styles.buttontext}
+                            onPress={() => { this.proceed(email, phoneNumber) }}
+                            label={'SIGN UP'} />
 
                         </View>
                     </KeyboardAvoidingView>
-                    :
-                    null}
+                :
+                null}
             </View>
         )
     }
