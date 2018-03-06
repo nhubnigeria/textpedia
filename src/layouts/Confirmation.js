@@ -47,12 +47,20 @@ class Confirmation extends Component {
             await AsyncStorage.setItem('jwt', jwt);
             this.setState({ 'jwt': jwt });
         } catch (error) {
-            console.log('Yesss ', error)
+         
         }
 
     }
 
-
+     deleteJWT = async(jwt)=> {
+        try {
+          await AsyncStorage.removeItem(jwt);
+          return true;
+        }
+        catch(exception) {
+          return false;
+        }
+      }
 
     proceed = (token) => {
 
@@ -78,6 +86,7 @@ class Confirmation extends Component {
         })
             .then((res) => {
                 this.setState({ auth: true, show: false })
+                this.deleteJWT(jwt)
                 alert('Registration Completed')
             })
             .catch((err) => {
