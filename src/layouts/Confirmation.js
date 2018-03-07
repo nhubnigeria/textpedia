@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Image, AsyncStorage, KeyboardAvoidingView } from 'react-native'
+import { Image, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native'
 import { View } from 'react-native-animatable'
 import axios from 'axios'
 import { endpoint } from '../utils/index'
 import { styles } from '../styles/Confirmationstyles'
+import { NavigationActions } from 'react-navigation'
 import { CustomText, CustomButton, CustomTextInput } from '../components'
 
 class Confirmation extends Component {
@@ -13,20 +14,17 @@ class Confirmation extends Component {
         this.state = {
             token: '',
             auth: false,
-            error: '',
             show: false,
             jwt: this.props.navigation.state.params.res,
         }
-
-        
     }
 
     validInput = (token) => {
         if (token.length == 0) {
-            alert('Please Enter Token')
+            this.showAlert('Please Enter Token')
             return false
         } else if (token.length < 28) {
-            alert('In Complete Token Entered')
+            showAlert('In Complete Token Entered')
             return false
         } else {
             return true
@@ -34,14 +32,45 @@ class Confirmation extends Component {
     }
 
     showAlert = (message) => {
+        let msg, txt, txt2
         const { jwt } = this.state
+        if (message == 'Please Enter Token') {
+            msg = 'Please Enter Token'
+            txt = ''
+            txt2 = 'OK'
+        } else 
+
+        if (message == 'In Complete Token Entered') {
+            msg = 'In Complete Token Entered'
+            txt = 'EXIT'
+            txt2 = 'RETRY'
+        } else 
         if (message == 'retry in 2 hours') {
-            alert('Expired OTP, Please Retry In 2 Hours')
+            msg = 'Expired OTP, Please Retry In 2 Hours'
+            txt = 'OK'
+            txt2 = ''
+        } else if (message == 'Invalid Token Entered') {
+            msg = 'Invalid Token Entered'
+            txt = 'EXIT'
+            txt2 = 'RETRY'
+        } else if (message == 'Your account has been verified!') {
+            msg = 'Your account has been verified!'
+            txt = 'OK'
+            txt2 = ''
         } else {
-            alert('Oops Something Went Wrong, Try Again Later')
+            msg = 'Oops Something Went Wrong, Try Again Later'
+            txt = 'EXIT'
+            txt2 = ''
         }
+        Alert.alert(
+            'Message',msg,[
+                { text: txt, onPress: () => { this.disabled() } },
+                { text: txt2, onPress: () => { } }
+            ],
+            { cancelable: false }
+        )
         this.saveJWT(jwt)
-        this.props.navigation.navigate('Splash', null)
+
     }
 
     saveJWT = async (jwt) => {
@@ -49,20 +78,28 @@ class Confirmation extends Component {
             await AsyncStorage.setItem('jwt', jwt);
             this.setState({ 'jwt': jwt });
         } catch (error) {
-         
-        }
 
+        }
     }
 
-     deleteJWT = async(jwt)=> {
+    disabled = () => {
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Splash' })],
+        });
+        this.props.navigation.dispatch(resetAction);
+    }
+
+
+    deleteJWT = async (jwt) => {
         try {
-          await AsyncStorage.removeItem(jwt);
-          return true;
+            await AsyncStorage.removeItem(jwt);
+            return true;
         }
-        catch(exception) {
-          return false;
+        catch (exception) {
+            return false;
         }
-      }
+    }
 
     proceed = (token) => {
 
@@ -89,13 +126,14 @@ class Confirmation extends Component {
             .then((res) => {
                 this.setState({ auth: true, show: false })
                 this.deleteJWT(jwt)
-                alert('Registration Completed')
-                this.props.navigation.navigate('Splash', null)
+                this.showAlert(res.data)
             })
             .catch((err) => {
-                this.setState({ error: err, show: false })
-                 
-                this.showAlert(message)
+                this.setState({ show: false })
+                if (err.response.status === 403) {
+                    err = 'Invalid Token Entered'
+                }
+                this.showAlert(err)
             })
     }
     render() {

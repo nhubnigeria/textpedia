@@ -31,21 +31,23 @@ class Signup extends Component {
         this.readJWT()
     }
 
-    disabled=(jwt)=>{
+    componentDidMount() {
+        this.setState({
+            pickerData: this.refs.phone.getPickerData()
+        });
+    }
+
+    disabled = (jwt) => {
         const resetAction = NavigationActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({routeName: 'Confirmation', params: { res: jwt},})],
-           
-          });
-          this.props.navigation.dispatch(resetAction);
+            actions: [NavigationActions.navigate({ routeName: 'Confirmation', params: { res: jwt }, })],
+
+        });
+        this.props.navigation.dispatch(resetAction);
     }
 
 
-    componentDidMount() {
-        this.setState({
-          pickerData: this.refs.phone.getPickerData()
-        });
-      }
+    
 
     onPressFlag() {
         this.refs.countryPicker.openModal()
@@ -63,7 +65,7 @@ class Signup extends Component {
             const value = await AsyncStorage.getItem('jwt');
             if (value !== null) {
                 this.setState({ show: false })
-                  this.disabled(value)
+                this.disabled(value)
             }
         } catch (error) {
             this.setState({ loaded: false })
@@ -71,8 +73,8 @@ class Signup extends Component {
     }
 
     validInput = () => {
-          const{email, phoneNumber} = this.state
-         if (email.length == 0) {
+        const { email, phoneNumber } = this.state
+        if (email.length == 0) {
             alert('Enter Email Address')
             return false
         } else if (!isValidEmail.test(email)) {
@@ -84,13 +86,13 @@ class Signup extends Component {
     }
 
     proceed = () => {
-        const{email, phoneNumber} = this.state
+        const { email, phoneNumber } = this.state
         if (this.validInput(email)) {
             this.submit(email, phoneNumber)
         }
     }
     submit = () => {
-        const{email, phoneNumber} = this.state
+        const { email, phoneNumber } = this.state
         this.setState({ show: true })
         let data = JSON.stringify({
             data: {
@@ -107,16 +109,11 @@ class Signup extends Component {
             .then((res) => {
                 this.setState({ show: false })
                 this.disabled(res.data.jwt)
+               
             })
             .catch((err) => {
-                if(err.response.status ===409){
-                    alert('Phone Number Must be Unique')
-                    this.setState({ show: false })
-                }else{
-                    alert('Oops try Again')
-                    this.setState({ show: false }) 
-                }
-               
+                alert(err.response.data)
+                this.setState({ show: false })
             })
     }
     render() {
@@ -139,14 +136,14 @@ class Signup extends Component {
 
                         <View style={styles.form} animation={'zoomIn'} delay={600} duration={400}>
 
-                            <PhoneInput 
+                            <PhoneInput
                                 ref="phone"
-                                onPressFlag={this.onPressFlag} 
+                                onPressFlag={this.onPressFlag}
                                 style={styles.Input}
-                                textStyle={styles.Input}
-                                textProps={{placeholder: 'Telephone number'}}
-                                onChangePhoneNumber={(number)=>{this.setState({phoneNumber:number})}}/>
-                                
+                                textStyle={styles.textInput}
+                                textProps={{ placeholder: 'Telephone number' }}
+                                onChangePhoneNumber={(number) => { this.setState({ phoneNumber: number }) }} />
+
                             <CountryPicker
                                 ref="countryPicker"
                                 onChange={value => this.selectCountry(value)}

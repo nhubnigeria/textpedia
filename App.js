@@ -22,7 +22,6 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this._loadAssetsAsync()
-
   }
 
   _loadAssetsAsync = async () => {

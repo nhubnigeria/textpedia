@@ -1,10 +1,16 @@
+import Dimensions from 'Dimensions';
+ const myHeight = Dimensions.get('window').height;
+ const myWidth = Dimensions.get('window').width;
+
 export const styles = {
 
     container: {
 
         alignContent: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        height: myHeight * 0.05,
+
 
     },
 
@@ -33,12 +39,13 @@ export const styles = {
     },
 
 
-    input: {
+    Input: {
         borderRadius: 4,
         height: 50,
         borderColor:'gray',
         borderWidth: 0,
         backgroundColor: '#ccc',
+        margin: 20,
         padding: 15,
     },
 
