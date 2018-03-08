@@ -1,16 +1,14 @@
+import {Metrics}from '../utils/Metrics'
+
 export const styles = {
-    wrapper: {
-
-    },
-
-    slide: {
-        flex: 1,
-        backgroundColor: 'transparent'
-    },
+     wrapper:{
+        
+     },
     container: {
         flex: 1,
         backgroundColor: '#ccc',
-        padding: 25
+        padding:Metrics.splashContainerPadding,
+        
     },
 
     text: {
@@ -26,11 +24,21 @@ export const styles = {
 
     },
 
-    headertext: {
+    headerText: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 15,
-        lineHeight: 35,
+        marginTop: Metrics.textMargin,
+        padding:0,
+        fontSize:Metrics.headerFontSize,
+        color: '#841584',
+        fontFamily: 'bold',
+    },
+
+
+    cardHeader: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Metrics.cardMarginTop,
         padding: 15,
         fontSize: 26,
         color: 'white',
@@ -55,6 +63,11 @@ export const styles = {
         marginRight: 7
     },
 
+    dotStyle: {
+        marginTop:54,
+        marginBottom:44
+    },
+
     active: {
         backgroundColor: '#fff',
         width: 13,
@@ -65,12 +78,15 @@ export const styles = {
     },
 
     card: {
-        card: { width: 500 },
-        card: { marginBottom: 120, marginTop: 70 }
+        card: { width:Metrics.layoutWidth, height:Metrics.layoutHeight, 
+            marginBottom:Metrics.cardMarginBottom,
+             marginTop: Metrics.cardMarginTop}
     },
 
     cardTitle: {
-        cardTitle: { backgroundColor: '#841584', padding: 0, justifyContent: 'center' }
+        cardTitle: { backgroundColor: '#841584', 
+                    padding:Metrics.cardTitlePadding, justifyContent: 'center',
+                     height:Metrics.cardTitle }
 
     },
 
@@ -88,11 +104,35 @@ export const styles = {
         fontFamily: 'bold'
     },
 
-    image: {
+    headerLabel: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 65
-    }
+        marginTop:Metrics.headerLabelMargin,
+    },
+
+
+    box: {
+        width: 300,
+        height: 450,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 10,
+        shadowColor: 'black',
+        shadowOpacity: 0.5,
+        shadowRadius: 3,
+        shadowOffset: {
+            height: 0,
+            width: 0
+        },
+        elevation: 2
+    },
+
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: 'black'
+    },
 
 
 }

@@ -6,7 +6,7 @@ import { NavigationActions } from 'react-navigation'
 import { styles } from '../styles/Signupstyles'
 import { endpoint, isValidEmail } from '../utils/index'
 import { CustomButton, CustomTextInput, CustomText } from '../components'
-import { clearStore, getToken, finishRegidtration } from '../utils'
+import  {offset} from '../utils'
 import PhoneInput from 'react-native-phone-input';
 import CountryPicker from 'react-native-country-picker-modal';
 
@@ -59,7 +59,6 @@ class Signup extends Component {
     readJWT = async () => {
         try {
             this.setState({ loaded: true })
-
             const value = await AsyncStorage.getItem('jwt');
             if (value !== null) {
                 this.setState({ show: false })
@@ -110,10 +109,10 @@ class Signup extends Component {
             })
             .catch((err) => {
                 if(err.response.status ===409){
-                    alert('Phone Number Must be Unique')
+                    alert(err)
                     this.setState({ show: false })
                 }else{
-                    alert('Oops try Again')
+                    alert('Oops.. Try Again')
                     this.setState({ show: false }) 
                 }
                
@@ -125,12 +124,12 @@ class Signup extends Component {
             <View style={styles.container}>
                 {loaded ?
                     <KeyboardAvoidingView
-                        keyboardVerticalOffset={300}
+                        keyboardVerticalOffset={offset}
                         style={styles.container}
                         behavior="padding" >
 
                         <View style={styles.image} animation={'bounceIn'} delay={800} duration={400}>
-                            <Image source={require('../assets/images/logo.png')} />
+                            <Image source={require('../assets/images/logo.png')} style={styles.imageSize} />
                             <CustomText style={styles.headertext}
                                 content={'Sign Up Form'} />
 
@@ -143,7 +142,7 @@ class Signup extends Component {
                                 ref="phone"
                                 onPressFlag={this.onPressFlag} 
                                 style={styles.Input}
-                                textStyle={styles.Input}
+                                textStyle={styles.phoneInput}
                                 textProps={{placeholder: 'Telephone number'}}
                                 onChangePhoneNumber={(number)=>{this.setState({phoneNumber:number})}}/>
                                 
@@ -161,7 +160,7 @@ class Signup extends Component {
                                 style={styles.textInput}
                                 onChangeText={(email) => this.setState({ email: email })}
                                 value={email}
-                                placeholder={'JohnDoe@gmail.com'}
+                                placeholder={'eg. JohnDoe@gmail.com'}
                                 underlineColorAndroid={'transparent'}
                                 placeholderTextColor={'rgba(255, 255,255,0.7)'}
                                 keyboardType={'email-address'}

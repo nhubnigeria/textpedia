@@ -1,18 +1,21 @@
+import { Platform } from 'react-native';
+import Dimensions from 'Dimensions';
+import {Metrics}from '../utils/Metrics'
+
+
 export const styles = {
 
     container: {
-
         alignContent: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white'
-
+        backgroundColor: 'white',
+    
     },
 
     form: {
-        //200
-        marginTop: 150,
+        marginTop:Metrics.formMarginTop,
         backgroundColor: '#841584',
-        height: 350,
+        height:Metrics.formHeight,
         paddingBottom: 20,
         paddingRight:20,
         paddingLeft:20,
@@ -32,13 +35,25 @@ export const styles = {
         color:'#841584'
     },
 
+    phoneInput: {
+        fontFamily:'regular',
+        fontSize: 16,
+        height: 50,
+        borderColor:'gray',
+        borderWidth: 0,
+        backgroundColor: '#ccc',
+        color:'#841584',
+        //padding: 15,
+    },
 
-    input: {
+
+    Input: {
         borderRadius: 4,
         height: 50,
         borderColor:'gray',
         borderWidth: 0,
         backgroundColor: '#ccc',
+        margin:20,
         padding: 15,
     },
 
@@ -57,20 +72,24 @@ export const styles = {
     },
 
     image: {
+        paddingTop:95,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 355
+        marginTop:Metrics.imageMargin,
+    },
+
+    imageSize:{
+        width: Metrics.imageSize,
+        height:Metrics.imageSize
     },
 
     headertext:{
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop:15,
-        lineHeight:35,
-        padding:15,
-        fontSize:26,
+        fontSize:Metrics.headerText,
         color:'#841584',
         fontFamily:'bold',
     },
+
 
 }
