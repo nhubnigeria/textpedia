@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Image, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native'
 import { View } from 'react-native-animatable'
 import axios from 'axios'
-import { endpoint } from '../utils/index'
+import { endpoint, offset} from '../utils'
 import { styles } from '../styles/Confirmationstyles'
 import { NavigationActions } from 'react-navigation'
 import { CustomText, CustomButton, CustomTextInput } from '../components'
@@ -141,12 +141,12 @@ class Confirmation extends Component {
         return (
             <View style={styles.container}>
                 <KeyboardAvoidingView
-                    keyboardVerticalOffset={350}
+                    keyboardVerticalOffset={offset}
                     style={styles.container}
                     behavior="padding"
                 >
                     <View style={styles.image} animation={'bounceIn'} delay={800} duration={400}>
-                        <Image source={require('../assets/images/logo.png')} />
+                        <Image source={require('../assets/images/logo.png')} style={styles.imageSize} />
                         <CustomText style={styles.headertext}
                             content={'Enter the Token Sent to Your Mail'} />
 

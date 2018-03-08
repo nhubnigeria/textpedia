@@ -20,28 +20,29 @@ class Splash extends Component {
           this.props.navigation.dispatch(resetAction);
     }
 
-    
     render() {
         return (
             <View style={styles.container} animation={'zoomIn'} delay={600} duration={400}>
                 <StatusBar barStyle='light-content' />
-                <View style={styles.image}>
-                <Image source={require('../assets/images/logo.png')} />
-                </View>
-
+                <View style={styles.headerLabel}>
+                  <CustomText style={styles.headerText}
+                    content= {'TextPedia'}/>
+                    </View>
+            
                 <Swiper style={styles.wrapper}
                     dot={<View style={styles.dot} />}
                     activeDot={<View style={styles.active} />}
+                    dotStyle={styles.dotStyle}
                     paginationStyle={{ bottom: 70}}
                     loop={false}>
                     <Card styles={styles.card}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <CardTitle styles={styles.cardTitle}>
-                                <CustomText style={styles.headertext}
+                                <CustomText style={styles.cardHeader}
                                      content={header1}/>
                                 
                             </CardTitle>
-                            <CardContent>
+                            <CardContent styles={styles.content}>
                                 <CustomText style={styles.text}
                                     content= {welcome_p1}/>
                                 
@@ -58,7 +59,7 @@ class Splash extends Component {
                     <Card styles={styles.card}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <CardTitle styles={styles.cardTitle}>
-                                <CustomText style={styles.headertext}
+                                <CustomText style={styles.cardHeader}
                                     content= {header2}/>
                                 
                             </CardTitle>
@@ -75,7 +76,7 @@ class Splash extends Component {
                     <Card styles={styles.card}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <CardTitle styles={styles.cardTitle}>
-                                <CustomText style={styles.headertext}
+                                <CustomText style={styles.cardHeader}
                                    content= {header3}/>
                                 
                             </CardTitle>

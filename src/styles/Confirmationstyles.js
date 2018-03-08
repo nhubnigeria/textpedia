@@ -1,25 +1,46 @@
 
+import  {normalize} from '../utils/NormalizeSize'
+
+
 export const styles = {
+
+    container: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+    
+    },
+
+    form: {
+        marginTop:normalize(250),
+        backgroundColor: '#841584',
+        height:normalize(300),
+        paddingBottom:normalize(20),
+        paddingRight:normalize(20),
+        paddingLeft:normalize(20),
+
+    },
+
     textInput: {
         borderRadius: 4,
-        fontSize: 16,
-        height: 50,
-        borderColor: 'gray',
+        fontFamily:'regular',
+        fontSize:normalize(16),
+        height:normalize(50),
+        borderColor:'gray',
         borderWidth: 0,
         backgroundColor: '#ccc',
-        margin: 20,
-        padding: 15,
-        fontFamily: 'regular',
-        color: '#841584',
+        margin:normalize(20),
+        padding:normalize(15),
+        color:'#841584'
     },
 
     button: {
         backgroundColor: 'white',
         borderRadius: 4,
-        padding: 15,
-        height: 50,
-        margin: 20,
-        elevation: 4,
+        padding:normalize(15),
+        height:normalize(50),
+        margin:normalize(20),
+        elevation:normalize(4),
     },
 
     buttontext: {
@@ -27,51 +48,25 @@ export const styles = {
         fontFamily: 'bold'
     },
 
-    text: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 5,
-        padding: 5,
-        fontSize: 16,
-        marginLeft: 25,
-        marginRight: 25,
-        fontFamily: 'regular',
-        backgroundColor: 'white'
-    },
-
-    container: {
-
-        alignContent: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-
-    },
-
-    form: {
-        marginTop: 200,
-        backgroundColor: '#841584',
-        height: 200,
-        paddingRight: 20,
-        paddingLeft: 20,
-
-
-    },
-
     image: {
+        paddingTop:normalize(90),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 355
+        marginTop:normalize(350),
     },
 
-    headertext: {
+    imageSize:{
+        width:normalize(90),
+        height:normalize(90),
+    },
+
+    headertext:{
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 15,
-        lineHeight: 35,
-        padding: 15,
-        fontSize: 26,
-        color: '#841584',
-        fontFamily: 'bold',
+        fontSize:normalize(26),
+        color:'#841584',
+        fontFamily:'bold',
     },
+
 
 }

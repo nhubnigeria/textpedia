@@ -3,9 +3,10 @@
     "name": "TextPedia",
     "icon": "./src/assets/images/icon.png",
     "version": "1.0.0",
-    "slug": "my-app",
+    "slug": "TextPedia",
     "sdkVersion": "25.0.0",
     "privacy": "public",
+    "orientation": "portrait",
     "ios": {
       "bundleIdentifier": "com.yourcompany.yourappname"
     },
