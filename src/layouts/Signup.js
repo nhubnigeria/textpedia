@@ -1,34 +1,36 @@
 import React, { Component } from 'react'
-import { View } from 'react-native-animatable'
-import { Image, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import axios from 'axios'
-import { NavigationActions } from 'react-navigation'
-import { styles } from '../styles/Signupstyles'
-import { endpoint, isValidEmail } from '../utils/index'
-import { CustomButton, CustomTextInput, CustomText } from '../components'
 import  {offset} from '../utils'
-import PhoneInput from 'react-native-phone-input';
-import CountryPicker from 'react-native-country-picker-modal';
+import { View } from 'react-native-animatable'
+import { styles } from '../styles/Signupstyles'
+import PhoneInput from 'react-native-phone-input'
+import { NavigationActions } from 'react-navigation'
+import { Image, KeyboardAvoidingView, Alert} from 'react-native'
+import { endpoint, isValidEmail , getToken, formatPhone} from '../utils/index'
+import CountryPicker from 'react-native-country-picker-modal'
+import { CustomButton, CustomTextInput, CustomText } from '../components'
 
 class Signup extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.state = {
-            jwt: undefined,
             email: '',
             phoneNumber: '',
             show: false,
-            loaded: false,
             cca2: 'US',
+            jwt:'',
         };
 
         this.onPressFlag = this.onPressFlag.bind(this);
         this.selectCountry = this.selectCountry.bind(this);
+    
     }
 
-    componentWillMount() {
-        this.readJWT()
+     async componentWillMount(){
+        const value = await getToken(); 
+        await this.setState({jwt:value})
+         await (value!=null)?this.disabled():null
     }
 
     componentDidMount() {
@@ -37,7 +39,8 @@ class Signup extends Component {
         });
     }
 
-    disabled = (jwt) => {
+    disabled = () => {
+        const{jwt} = this.state
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName: 'Confirmation', params: { res: jwt }, })],
@@ -46,56 +49,50 @@ class Signup extends Component {
         this.props.navigation.dispatch(resetAction);
     }
 
-
-    
-
-    onPressFlag() {
+    onPressFlag=()=>{
         this.refs.countryPicker.openModal()
     }
 
-    selectCountry(country) {
+    selectCountry=(country)=>{
         this.refs.phone.selectCountry(country.cca2.toLowerCase());
         this.setState({ cca2: country.cca2 });
     }
 
-    readJWT = async () => {
-        try {
-            this.setState({ loaded: true })
-            const value = await AsyncStorage.getItem('jwt');
-            if (value !== null) {
-                this.setState({ show: false })
-                this.disabled(value)
-            }
-        } catch (error) {
-            this.setState({ loaded: false })
-        }
+       isFormValid=()=>{
+         const  {email, phoneNumber} = this.state
+          
+              if(phoneNumber.length == 0){
+                
+                 this.showAlert('Enter Valid Phone Number')
+                
+              }else
+             if(!isValidEmail(email)){
+                this.showAlert('Enter Valid Email Address')
+
+             }else{
+                 this.submit()
+             }
+       }
+
+
+    showAlert = (response) => {
+        
+        Alert.alert(
+            'Message', response, [
+                { text: 'OK' },
+            ],
+            { cancelable: false }
+      )
+
     }
 
-    validInput = () => {
-        const { email, phoneNumber } = this.state
-        if (email.length == 0) {
-            alert('Enter Email Address')
-            return false
-        } else if (!isValidEmail.test(email)) {
-            alert('Enter A Valid Email Address')
-            return false
-        } else {
-            return true
-        }
-    }
-
-    proceed = () => {
-        const { email, phoneNumber } = this.state
-        if (this.validInput(email)) {
-            this.submit(email, phoneNumber)
-        }
-    }
     submit = () => {
-        const { email, phoneNumber } = this.state
+        const { email, phoneNumber,  } = this.state
+          let  newPhone = formatPhone(phoneNumber, 4, '')
         this.setState({ show: true })
         let data = JSON.stringify({
             data: {
-                phoneNumber,
+                newPhone,
                 email
             }
         })
@@ -106,26 +103,20 @@ class Signup extends Component {
             }
         })
             .then((res) => {
-                this.setState({ show: false })
-                this.disabled(res.data.jwt)
+                this.setState({ show: false, jwt: res.data.jwt })
+                this.disabled()
                
             })
             .catch((err) => {
-                if(err.response.status ===409){
-                    alert(err.response.data)
-                    this.setState({ show: false })
-                }else{
-                    alert('Oops.. Try Again')
-                    this.setState({ show: false }) 
-                }
-               
+                this.setState({ show: false}) 
+                this.showAlert(err.response.data)
             })
     }
     render() {
-        const { show, phoneNumber, email, loaded } = this.state
+        const { show, phoneNumber, email} = this.state
+    
         return (
             <View style={styles.container}>
-                {loaded ?
                     <KeyboardAvoidingView
                         keyboardVerticalOffset={offset}
                         style={styles.container}
@@ -158,10 +149,9 @@ class Signup extends Component {
                                 <View />
                             </CountryPicker>
 
-
                             <CustomTextInput
                                 style={styles.textInput}
-                                onChangeText={(email) => this.setState({ email: email })}
+                                onChangeText={(email) =>{ this.setState({ email: email })}}
                                 value={email}
                                 placeholder={'eg. JohnDoe@gmail.com'}
                                 underlineColorAndroid={'transparent'}
@@ -173,13 +163,11 @@ class Signup extends Component {
                             <CustomButton
                                 isLoading={show}
                                 style={styles.button} textStyle={styles.buttontext}
-                                onPress={() => { this.proceed() }}
+                                onPress={()=> this.isFormValid()}
                                 label={'SIGN UP'} />
 
                         </View>
                     </KeyboardAvoidingView>
-                    :
-                    null}
             </View>
         )
     }

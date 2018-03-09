@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Image, AsyncStorage, KeyboardAvoidingView, Alert } from 'react-native'
+import { Image, KeyboardAvoidingView, Alert } from 'react-native'
 import { View } from 'react-native-animatable'
 import axios from 'axios'
-import { endpoint, offset} from '../utils'
+import { endpoint, offset, saveToken, deleteToken } from '../utils'
 import { styles } from '../styles/Confirmationstyles'
 import { NavigationActions } from 'react-navigation'
 import { CustomText, CustomButton, CustomTextInput } from '../components'
@@ -13,74 +13,58 @@ class Confirmation extends Component {
         super(props)
         this.state = {
             token: '',
-            auth: false,
             show: false,
+            message:'',
             jwt: this.props.navigation.state.params.res,
         }
     }
 
-    validInput = (token) => {
-        if (token.length == 0) {
+    validInput = () => {
+        const{token}= this.state
+        if(token.length == 0){
             this.showAlert('Please Enter Token')
-            return false
-        } else if (token.length < 28) {
-            showAlert('In Complete Token Entered')
-            return false
-        } else {
-            return true
-        }
-    }
+        } else{
+            this.submit()
+        }  
+    } 
 
     showAlert = (message) => {
-        let msg, txt, txt2
+        let msg, btn1, btn2
         const { jwt } = this.state
-        if (message == 'Please Enter Token') {
-            msg = 'Please Enter Token'
-            txt = ''
-            txt2 = 'OK'
-        } else 
+        switch (message) {
+            case 'Please Enter Token':
+                msg = 'Please Enter Token'
+                btn1 = 'Exit'
+                btn2 = 'OK'
+                break;
 
-        if (message == 'In Complete Token Entered') {
-            msg = 'In Complete Token Entered'
-            txt = 'EXIT'
-            txt2 = 'RETRY'
-        } else 
-        if (message == 'retry in 2 hours') {
-            msg = 'Expired OTP, Please Retry In 2 Hours'
-            txt = 'OK'
-            txt2 = ''
-        } else if (message == 'Invalid Token Entered') {
-            msg = 'Invalid Token Entered'
-            txt = 'EXIT'
-            txt2 = 'RETRY'
-        } else if (message == 'Your account has been verified!') {
-            msg = 'Your account has been verified!'
-            txt = 'OK'
-            txt2 = ''
-        } else {
-            msg = 'Oops Something Went Wrong, Try Again Later'
-            txt = 'EXIT'
-            txt2 = ''
+            case 'retry in 2 hours':
+                msg = 'Expired OTP, Please Retry In 2 Hours'
+                btn1 = 'OK'
+                btn2 = ''
+                break;
+            case 'Your account has been verified!':
+                msg = 'Your account has been verified!'
+                btn1 = 'OK'
+                btn2 = ''
+                break;
+                default:
+                msg = message
+                btn1 = 'EXIT'
+                btn2 = ''
         }
+
         Alert.alert(
-            'Message',msg,[
-                { text: txt, onPress: () => { this.disabled() } },
-                { text: txt2, onPress: () => { } }
+            'Message', msg, [
+                { text: btn1, onPress: () => this.disabled()},
+                { text: btn2 }
             ],
             { cancelable: false }
         )
-        this.saveJWT(jwt)
+        saveToken(jwt)
 
     }
 
-    saveJWT = async (jwt) => {
-        try {
-            await AsyncStorage.setItem('jwt', jwt);
-            this.setState({ 'jwt': jwt });
-        } catch (error) {
-
-        }
-    }
 
     disabled = () => {
         const resetAction = NavigationActions.reset({
@@ -89,27 +73,11 @@ class Confirmation extends Component {
         });
         this.props.navigation.dispatch(resetAction);
     }
-
-
-    deleteJWT = async (jwt) => {
-        try {
-            await AsyncStorage.removeItem(jwt);
-            return true;
-        }
-        catch (exception) {
-            return false;
-        }
-    }
-
-    proceed = (token) => {
-
-        if (this.validInput(token)) {
-            this.submit(token)
-        }
-    }
-    submit = (token) => {
-        const jwt = this.props.navigation.state.params.res
-        this.setState({ show: true, jwt: jwt })
+ 
+    
+    submit = () => {
+        const {jwt, token} = this.state
+        this.setState({ show: true})
 
         let data = JSON.stringify({
             data: {
@@ -124,20 +92,16 @@ class Confirmation extends Component {
             }
         })
             .then((res) => {
-                this.setState({ auth: true, show: false })
-                this.deleteJWT(jwt)
-                this.showAlert(res.data)
+                this.setState({ show: false, message:res.data })
+                deleteToken(jwt)
             })
             .catch((err) => {
-                this.setState({ show: false })
-                if (err.response.status === 403) {
-                    err = 'Invalid Token Entered'
-                }
-                this.showAlert(err)
+                this.setState({ show: false , message:err.response.data}) 
             })
     }
     render() {
-        const { show, token } = this.state
+        const { show, token, message } = this.state
+        ((message)?this.showAlert(message):null)
         return (
             <View style={styles.container}>
                 <KeyboardAvoidingView
@@ -165,7 +129,7 @@ class Confirmation extends Component {
                         <CustomButton
                             isLoading={show}
                             style={styles.button} textStyle={styles.buttontext}
-                            onPress={() => { this.proceed(token) }}
+                            onPress={() => this.validInput()}
                             label={'FINISH'} />
 
                     </View>

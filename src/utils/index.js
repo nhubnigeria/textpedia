@@ -1,8 +1,10 @@
 import {Metrics}from './Metrics'
+import { AsyncStorage } from 'react-native'
 
 export const endpoint = 'https://textpedia-api.herokuapp.com/'
-export const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+export const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
  export const offset = Metrics.keyboard
+
 export const header1 = 'ABOUT'
 export const welcome_p1 = 'Looking for the meanings of words, phrases, or expressions?'
 export const welcome_p2 = 'Without Timing out of a conversation/address for too long'
@@ -17,3 +19,51 @@ export const header3 = 'EXAMPLE'
 export const example_1 = '1. SMS "Abraham Lincoln" to the phone number. Multiple keywords are comma separated as shown in the next example.'
 export const example_2 = '2. SMS "Abraham Lincoln", "Albert Einstein", "Milky Way" to the phone number.'
 export const example_3 = '3. Finally, ensure that the keywords are spelled correctly, while Tetxpedia queries are case insensitive, at this time spell checking is not available. Enjoy the Textpedia service.'
+
+ export const  isValidEmail = (email) => {
+    if (email.length == 0) {
+        return false
+    } else if (!validEmail.test(email)) {
+        return false
+    } else {
+        return true
+    }
+  }
+
+
+   export const getToken = async (jwt) => {
+        try {
+             await AsyncStorage.getItem('jwt');
+        } catch (error) {
+        
+        }
+    }
+
+    export const saveToken= async (jwt) => {
+        try {
+            await AsyncStorage.setItem('jwt', jwt);
+          
+        } catch (error) {
+
+        }
+    }
+
+   export const  deleteToken = async (jwt) => {
+        try {
+            await AsyncStorage.removeItem(jwt);
+        }
+        catch (exception) {
+        }
+    }
+
+    export const formatPhone=(str,index,chr) =>{
+        if(index > str.length-1) return str;
+        var res = str.charAt(4)
+       if (res=='0'){
+            return str.substr(0,index) + chr + str.substr(index+1)
+       }else{
+                str;
+            }
+    }
+
+
